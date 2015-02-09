@@ -60,20 +60,21 @@ export default Ember.Mixin.create({
   }.on('willDestroyElement'),
 
   didChangeDate: function(event) {
-    var isoDate = null;
+	var newDate = null;
 
     if (event.date) {
       if (this.get('multidate')) {
-         // set value to array if multidate
-         isoDate = this.$().datepicker('getUTCDates').map(function(date) {
-           return date.toISOString();
-         });
-      }
-      else {
-         isoDate = this.$().datepicker('getUTCDate').toISOString();
-      }
+			// set value to array if multidate
+			newDate = this.$().datepicker('getUTCDates').map(function(date) {
+				return date.toISOString();
+			});
+		} else if (event.date && this.get('forceDateValue')) {
+			newDate = event.date;
+		} else if (event.date && !this.get('forceDateValue')) {
+			newDate = this.$().datepicker('getUTCDate').toISOString();
+		}
     }
 
-    this.set('value', isoDate);
+    this.set('value', newDate);
   }
 });

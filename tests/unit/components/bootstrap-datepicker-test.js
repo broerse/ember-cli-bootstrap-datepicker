@@ -65,3 +65,20 @@ test('should set dates provided by value (multidate, multidateSeparator provided
   equal(this.$().val(), '01/13/2015;01/07/2015;01/15/2015', 'should set value as input field value using multidate separator');
   equal(this.$().datepicker('getDates').length, 3, 'should set internal datepicker dates by value');
 });
+
+test('should use forceDateValue to set value as JS Date objects instead of ISOString', function(){
+  expect(1);
+
+  var date = new Date();
+  var newDate = new Date("2015-02-10");
+
+  var component = this.subject({
+    value: date,
+    multidate: false,
+	forceDateValue: true
+  });
+
+  component.set('value', newDate);
+
+  equal(component.get('value'), newDate, "Value should be the date object set");
+});
